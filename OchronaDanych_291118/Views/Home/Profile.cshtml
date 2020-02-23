@@ -1,0 +1,51 @@
+﻿@model IEnumerable<Note>
+<!DOCTYPE HTML>
+<html lang=pl>
+<head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script>
+    <script src="~/js/Home/Profile.js"></script>
+    <link href="~/css/Home/Profile.css" rel="stylesheet" />
+    <title>Profil</title>
+</head>
+<body>
+    @{
+        ViewData["Title"] = "Cześć, " + User.Identity.Name;
+    }
+    <h2 style="margin-bottom: 20px;">@ViewData["Title"]</h2>
+    <div style="display:flex;">
+        <div class="col-4"><a class="btn btn-primary" href="/Home/AddNote">Dodaj notatkę</a></div>
+        <div class="col-4" style="text-align: center;"><a class="btn btn-primary" href="/Home/Notes">Publiczne notatki</a></div>
+        <div class="col-4" style="text-align: right;"><a class="btn btn-primary" href="/Home/ChangePassword">Zmień hasło</a></div>
+    </div>
+    <br />
+    <div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Tytuł</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Title)
+                        </td>
+                        <td>
+                            <a style="margin-right: 20px" class="btn btn-primary" asp-controller="Home" asp-action="Note" asp-route-id="@item.Id">Detale</a>
+                            <a style="margin-right: 20px" class="btn btn-primary" asp-controller="Home" asp-action="EditNote" asp-route-id="@item.Id">Edytuj</a>
+                            <a style="margin-right: 20px" class="btn btn-danger" onclick="deleteNote('@item.Id')">Usuń</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        @*@foreach (Note note in Model)
+            {
+                <div><a href="/Home/Note?id=@note.Id">@note.Title</a></div>
+            }*@
+    </div>
+</body>
+</html>

@@ -1,0 +1,70 @@
+﻿@model OchronaDanych_291118.Models.NoteViewModel
+<!DOCTYPE HTML>
+<html lang=pl>
+<head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script>
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.16.0/jquery.validate.min.js"></script>
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery.validation.unobtrusive/3.2.6/jquery.validate.unobtrusive.min.js"></script>
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote.js" defer></script>
+    <title>Edytuj notatkę</title>
+</head>
+<body>
+    @{
+        ViewData["Title"] = "Edytuj notatkę";
+    }
+    <h2 style="margin-bottom: 20px;">@ViewData["Title"]</h2>
+
+    @using (Html.BeginForm("EditNote", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(m => m.Id)
+        <div id="Title" class="col-12 form-group">
+            <div>
+                <label>Tytuł</label><p style="display:inline; color:red">*</p>
+            </div>
+            @Html.EditorFor(m => m.Title, new { htmlAttributes = new { @class = "form-control", @maxlength = "120", @minlength = "4" } })
+            <div>
+                @Html.ValidationMessageFor(m => m.Title, "", new { @style = "color: red; font-weight: bold;" })
+            </div>
+        </div>
+        <div id="Description" class="col-12 form-group">
+            <label>Notatka</label><p style="display:inline; color:red">*</p>
+            @Html.TextAreaFor(m => m.Description, new { @class = "form-control", rows = "5", id = "summernote" })
+            @Html.ValidationMessageFor(m => m.Description, "", new { @style = "color: red; font-weight: bold;" })
+        </div>
+        <div id="IsForEveryoneDiv" class="col-12 form-group">
+            <label>Czy plik ma być dostępny dla wszystkich?</label><p style="display:inline; color:red">*</p>
+            <br />
+            @Html.CheckBoxFor(m => m.IsForEveryone, new { @onclick = "onCheckboxClick()" }) Tak
+            @Html.ValidationMessageFor(m => m.IsForEveryone, "", new { @style = "color: red; font-weight: bold;" })
+        </div>
+        <div id="Emails" class="col-12 form-group" style="display: none;">
+            <label>Adresy email użytkowników</label><p style="display:inline; color:red">*</p>
+            <br />
+            @Html.EditorFor(m => m.Emails, new { htmlAttributes = new { @class = "form-control", @placeholder = "Każdy wpisany email oddziel znakiem ';'. Np.: example@example.pl; example2@example.pl " } })
+            @Html.ValidationMessageFor(m => m.Emails, "", new { @style = "color: red; font-weight: bold;" })
+        </div>
+        <div class="form-group">
+            <input id="submit" type="submit" class="btn btn-primary" />
+        </div>
+    }
+</body>
+</html>
+<script>
+$(document).ready(function() {
+    $('#summernote').summernote();
+    onCheckboxClick();
+});
+
+    function onCheckboxClick() {
+        if ($("#IsForEveryone").prop("checked") == true) {
+            $("#Emails").hide();
+        }
+        else {
+            $("#Emails").show();
+        }
+    }
+
+</script>

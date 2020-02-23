@@ -1,0 +1,43 @@
+﻿@model IEnumerable<Note>
+<!DOCTYPE HTML>
+<html lang=pl>
+<head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script>
+    <script src="~/js/Home/Profile.js"></script>
+    <link href="~/css/Home/Profile.css" rel="stylesheet" />
+    <title>Notatki</title>
+</head>
+<body>
+    @{
+        ViewData["Title"] = "Publiczne notatki";
+    }
+    <h2 style="margin-bottom: 20px;">@ViewData["Title"]</h2>
+    <div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Tytuł</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Title)
+                        </td>
+                        <td>
+                            <a style="margin-right: 20px" class="btn btn-primary" asp-controller="Home" asp-action="Note" asp-route-id="@item.Id">Detale</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        @*@foreach (Note note in Model)
+            {
+                <div><a href="/Home/Note?id=@note.Id">@note.Title</a></div>
+            }*@
+    </div>
+</body>
+</html>
